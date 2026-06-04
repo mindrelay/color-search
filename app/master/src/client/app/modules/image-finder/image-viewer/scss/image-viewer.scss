@@ -1,0 +1,132 @@
+.image-viewer{ 
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    background: rgba(255,255,255,0.9);
+    z-index: 9;    
+
+    &__image-container{
+        width: 100%;   
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        padding: 30px;
+        padding-bottom: 50px;
+        padding-top: 50px;
+    }
+    &__image{
+        align-self: center;
+        object-fit: contain !important;
+        overflow: hidden;
+        max-width: calc(100%);   
+        max-height: calc(100%);
+        margin-top: -45px;
+        filter: drop-shadow(0px 0px 1px rgba(0,0,0,.3))
+        drop-shadow(0px 0px 5px rgba(0,0,0,.5));
+    }
+
+    &__topline{
+        position: relative;
+        width: 100%;
+        left:0;
+        top: 0;
+    }
+    &__separator{
+        align-self: center;
+        height: 10px;
+        width: 1px;
+        background: #A8A8A8;
+        margin: 0 10px 0 10px;
+    }
+    &__save {
+        cursor: pointer;
+        align-self: center;
+        text-decoration: none;
+    }
+    &__save-icon{
+        font-size: 1em;
+        color: black;
+    }
+    &__close-button{
+        cursor: pointer;
+        text-decoration: none;
+        position: absolute;
+        right: 0;
+        top: 2px;
+        margin-right: 10px;
+    }
+    &__close-icon{
+        align-self: center;
+        font-size: 1em;
+        color: black;
+    }
+    &__topline-main{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+        min-width: 200px;
+        height: 30px;
+        background: whitesmoke;
+    }
+    &__topline-content{
+        margin: 0px;
+        padding: 0px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-self: center;
+        width: 100%;
+        max-width: 1200px;
+        position: relative;
+    }
+    &__original{
+        align-self: center;
+    }
+    &__score{
+        align-self: center;
+    }
+    &__info{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        background: rgb(235, 235, 235);
+    }
+    &__attribution{
+        display: flex;
+        align-self: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 0.7em;
+    }
+    &__title{
+        margin-right: 5px;
+        align-self: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 20em;
+    }
+    &__owner{
+        margin-left: 5px;
+        align-self: center;
+        align-self: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    &__download{
+        display: hidden;
+    }
+}
+
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}

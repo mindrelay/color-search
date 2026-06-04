@@ -1,0 +1,27 @@
+.settings{
+
+    &__similarity-level{
+        margin-top: 10px;
+        width: 100%;
+    }
+    &__special-search_hide{
+        overflow: hidden;
+        height:0;
+        margin: 0;
+        line-height:0;
+    }
+    &__special-search_show{
+        overflow: initial;
+        height: initial;
+        margin: initial;
+        line-height: initial;
+    }
+}
+
+@media screen and  (min-width: 500px) {
+    .settings{     
+        &__similarity-level {
+            max-width: 300px;
+        }
+    }
+}

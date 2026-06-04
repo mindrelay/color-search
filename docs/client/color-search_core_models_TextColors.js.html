@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: color-search/core/models/TextColors.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: color-search/core/models/TextColors.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* TextColors model. Manages user selected words and colors.
+* @constructor:
+* @param {Service} colorService 'colorService' service
+* @memberof module:color-search
+*/
+class TextColors {
+
+    constructor(colorService) {
+        this._words = [];
+        this._sPercentage = 100;
+        this._lPercentage = 100;
+        this._colorService = colorService;
+        this.colorOccurence = new Map();
+        this.adjustedColorOccurence = new Map();
+    }
+
+    /** Getter for user selected words.
+    * @method words
+    * @return {string[]}
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    get words() {
+        return this._words;
+    }
+
+    /** Getter for user selected colors.
+    * @method colors
+    * @return {HSLColor[]}
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    get colors() {
+        return [...this.adjustedColorOccurence.values()];
+    }
+
+    /** Getter for user selected colors &amp; words
+    * @method colorsAndWords
+    * @return {Object} Object in form {colors: Map, words: string[]}.
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    get colorsAndWords() {
+        const o = {};
+        o.colors = this.colors;
+        o.words = this.words;
+        return o;
+    }
+
+    /** Getter for global saturation percentage
+    * @method sPercentage
+    * @return {number}
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    get sPercentage() {
+        return this._sPercentage;
+    }
+
+    /** Getter for global lightness percentage
+    * @method lPercentage
+    * @return {number}
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    get lPercentage() {
+        return this._lPercentage;
+    }
+
+    /** Setter for global saturation percentage
+    * @method sPercentage
+    * @param {number} sPercentage
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    set sPercentage(sPercentage) {
+        this._sPercentage = sPercentage;
+        this.calculateAdjustedColors();
+    }
+
+    /** Setter for global lightness percentage
+    * @method lPercentage
+    * @param {number} lPercentage
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    set lPercentage(lPercentage) {
+        this._lPercentage = lPercentage;
+        this.calculateAdjustedColors();
+    }
+
+    /** Setter for global saturation &amp; lightness percentage
+    * @method setSLPercentage
+    * @param {number} sPercentage
+    * @param {number} lPercentage
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    setSLPercentage(sPercentage, lPercentage) {
+        this._sPercentage = sPercentage;
+        this._lPercentage = lPercentage;
+        this.calculateAdjustedColors();
+    }
+
+    /** Delete all colors &amp; words
+    * @method clear
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    clear() {
+        this._words.length = 0;
+        this.colorOccurence.clear();
+        this.adjustedColorOccurence.clear();
+    }
+
+    /** Update all colors.
+    * @method update
+    * @param {Map} colors Hashmap with selected colors
+    * @param {number} sPercentage Global saturation percentage setting (-100 to + 100).
+    * @param {number} lPercentageGlobal Global lightness percentage setting (-100 to +100).
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    update(colors, sPercentage, lPercentage) {
+        this.clear();
+        if (colors &amp;&amp; colors.size > 0) {
+            for (const [key, value] of colors.entries()) {
+                if (value.color &amp;&amp; value.color.isSet()) {
+                    this._words.push(value.word);
+                    let color = this.colorOccurence.get(value.color.toString());
+                    if (color) {
+                        color.setWeight(color.weight + value.color.weight);
+                    } else {
+                        color = this._colorService.getColorInstance(value.color);
+                        this.colorOccurence.set(color.toString(), color);
+                    }
+                }
+            }
+        }
+        this.sPercentage = typeof sPercentage === "number" ? sPercentage : this.sPercentage;
+        this.lPercentage = typeof lPercentage === "number" ? lPercentage : this.lPercentage;
+        this.calculateAdjustedColors();
+    }
+
+    /** Recalculate all colors using global sPercentage &amp; lPercentage (interpolation used).
+    * @method calculateAdjustedColors
+    * @memberof module:color-search.TextColors
+    * @instance
+    */
+    calculateAdjustedColors() {
+        this.adjustedColorOccurence.clear();
+        for (const value of this.colorOccurence.values()) {
+            const color = this._colorService.getColorInstance(value);
+            color.interpolateS(this.sPercentage).interpolateL(this.lPercentage);
+            if (value.isAchromatic()) {
+                color.setAchromatic();
+            }
+            this.adjustedColorOccurence.set(color.toString(), color);
+        }
+    }
+}
+
+export default TextColors;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-color-adjuster.html">color-adjuster</a></li><li><a href="module-color-search.html">color-search</a></li><li><a href="module-color-toolbar.html">color-toolbar</a></li><li><a href="module-db.html">db</a></li><li><a href="module-dialog.html">dialog</a></li><li><a href="module-guide.html">guide</a></li><li><a href="module-image-finder.html">image-finder</a></li><li><a href="module-jsonrpc.html">jsonrpc</a></li><li><a href="module-main.html">main</a></li><li><a href="module-profiles.html">profiles</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-text-colorizer.html">text-colorizer</a></li></ul><h3>Classes</h3><ul><li><a href="module-color-adjuster.ColorAdjusterCtrl.html">ColorAdjusterCtrl</a></li><li><a href="module-color-search.ColorSearch.html">ColorSearch</a></li><li><a href="module-color-search.ColorService.html">ColorService</a></li><li><a href="module-color-search.ColorSet.html">ColorSet</a></li><li><a href="module-color-search.HSLColor.html">HSLColor</a></li><li><a href="module-color-search.Login.html">Login</a></li><li><a href="module-color-search.Routes.html">Routes</a></li><li><a href="module-color-search.Settings.html">Settings</a></li><li><a href="module-color-search.SettingsDAO.html">SettingsDAO</a></li><li><a href="module-color-search.TextColors.html">TextColors</a></li><li><a href="module-color-toolbar.ColorToolbarCtrl.html">ColorToolbarCtrl</a></li><li><a href="module-image-finder.FlickrInspectingStrategy.html">FlickrInspectingStrategy</a></li><li><a href="module-image-finder.Image.html">Image</a></li><li><a href="module-image-finder.ImageFinderCtrl.html">ImageFinderCtrl</a></li><li><a href="module-image-finder.ImageInspector.html">ImageInspector</a></li><li><a href="module-image-finder.Images.html">Images</a></li><li><a href="module-image-finder.ImagesRPCService.html">ImagesRPCService</a></li><li><a href="module-image-finder.InspectingBatch.html">InspectingBatch</a></li><li><a href="module-main.Main.html">Main</a></li><li><a href="module-profiles.ColorProfile.html">ColorProfile</a></li><li><a href="module-profiles.ColorProfiles.html">ColorProfiles</a></li><li><a href="module-profiles.ColorProfilesDAO.html">ColorProfilesDAO</a></li><li><a href="module-settings.SettingsCtrl.html">SettingsCtrl</a></li><li><a href="module-text-colorizer.Caret.html">Caret</a></li><li><a href="module-text-colorizer.Parser.html">Parser</a></li><li><a href="module-text-colorizer.TextColorizerCtrl.html">TextColorizerCtrl</a></li><li><a href="module-text-colorizer.WordNode.html">WordNode</a></li><li><a href="module-text-colorizer.Words.html">Words</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 10 2018 06:22:50 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

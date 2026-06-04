@@ -1,0 +1,83 @@
+color-search{
+    
+    .btn-default:hover {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+    }
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+
+    .btn-success:hover {
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+    .btn-info:hover {
+        color: #fff;
+        background-color: #5bc0de;
+        border-color: #46b8da;
+    }
+
+    .btn-danger:hover {
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+    }
+
+    .btn-warning:hover {
+        color: #fff;
+        background-color: #f0ad4e;
+        border-color: #eea236;
+    }
+
+    .btn-link:hover {
+        font-weight: normal;
+        color: #337ab7;
+        border-radius: 0;
+    }
+
+    .btn-bodyless, .btn-bodyless:hover {
+        display: inline-block;
+        color: #474747;
+        padding: 5px 10px 5px 10px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-bodyless:active {
+        color: black;
+    }
+
+    .btn-bodyless-primary, .btn-bodyless-primary:hover {
+        color: #337ab7;
+    }
+
+    .btn-bodyless-primary:active {
+        color: #204d74;
+    }
+
+    .btn-bodyless-danger, .btn-bodyless-danger:hover {
+        color: #d9534f;
+    }
+
+    .btn-bodyless-danger:active {
+        color: #ac2925;
+    }
+
+    .btn-bodyless-success, .btn-bodyless-success:hover {
+        color: #5cb85c;
+    }
+
+    .btn-bodyless-success:active {
+        color: #398439;
+    }
+
+    .icon-flipped {
+        transform: scaleX(-1);
+    }
+}

@@ -1,0 +1,10 @@
+<div class="image-finder">
+    <div class="image-finder__container">
+        <div ng-click="$ctrl.selectImage($event)" class="image-finder__images" infinite-scroll='$ctrl.showMore()' infinite-scroll-distance='0'>
+            <div ng-repeat="img in $ctrl.imagesToShow track by img.id">
+                <img imagefinder-image="{{img.id}}" ng-src="{{img.previewURL}}" class="image-finder__image" ng-error="$ctrl.thumbnailLoadingError($event, img)" ng-load="$ctrl.thumbnailLoaded($event, img)">
+            </div>
+        </div>
+    </div>
+    <image-viewer ng-show="$ctrl.selectedImage" image="$ctrl.selectedImage" on-images-updated="$ctrl.imagesUpdated()" on-close="$ctrl.selectedImage = null"></image-viewer>
+</div>

@@ -1,0 +1,130 @@
+.main{     
+
+    &__section{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+    }
+    &__section-title{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+    }
+    &__section-label{
+        align-self: center;
+        top: -18px;
+        position: absolute;
+        display: inline-block;
+        background: white;
+        color: black;
+        padding: 7px;
+        padding-left: 20px;
+        padding-right: 20px;
+    } 
+    &__section-content {
+        padding: 0px;
+        margin: 0px;
+        position: relative;
+        width: 100%;
+        border-top: 1px dotted #ddd;
+        max-width: 650px;
+    }
+    &__colorizer-controls{
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #ddd;
+        margin-top: -20px;
+        padding-top: 5px;
+    }
+    &__colorizer-separator {
+        display: inline-block;
+        height: 10px;
+        width: 1px;
+        background: #ddd;
+    }
+    &__colorizer-button {
+        margin: 0px 3px 0px 3px;
+        align-self: center;
+    }
+    &__adjustments-section {
+        margin-top: 40px;    
+    }
+    &__settings-section {
+        margin-top: 0px;
+    }
+    &__find-container{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+    }
+    &__find-button{
+        margin-top: 30px;
+        width: 100%;
+        max-width: 300px;
+    }
+    &__image-finder{
+        margin-top: 30px;
+    }
+    &__adjustments {
+        width: 100%;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        padding: 30px;
+    }
+    &__adjustments-content{
+        font-size: 0.9em;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        max-width: 540px;
+    }
+    &__adjuster{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+    &__profiles {
+        margin-top: 10px;
+        align-self: center;
+        width: 100%;     
+        max-width: 540px;
+    }
+    &__settings {
+        width: 100%;
+        max-width: 650px;      
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        padding: 30px;
+        padding-bottom: 0px;
+        padding-top: 20px;
+    }
+    &__settings-content {
+        width: 100%;
+        height: 100%;
+        max-width: 540px;
+    }
+    &__settings-label{
+        cursor: pointer;
+    }
+    &__caret{
+        margin-right: 5px;
+    }
+}
+
+@media screen and  (min-width: 500px) {
+    .main{     
+        &__settings-content {
+            width: 100%;
+            height: 100%;
+            max-width: 540px;
+        }
+    }
+}
+
+
+

@@ -1,0 +1,28 @@
+<div class="settings">
+    <div class="checkbox">
+        <label>
+            <input ng-model="$ctrl.settings.checkSemanticSimilarity" type="checkbox">Analyze semantics (experimental)
+        </label>
+    </div>
+    <div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios"  ng-model="$ctrl.settings.searchMode" value="regular" checked>Regular search (fast)
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios" ng-model="$ctrl.settings.searchMode" value="special">Special search (slow)
+            </label>
+        </div>
+    </div>
+    <div ng-class="$ctrl.settings.searchMode == 'special' ? 'settings__special-search_show' : 'settings__special-search_hide'">
+        <select ng-model="$ctrl.settings.distance">
+            <option ng-repeat="distance in $ctrl.settings.supportedDistances track by $index" data-distances-distance="{{$index}}" value="{{distance.id}}">{{distance.name}}</option>
+        </select>             
+        <div class="settings__similarity-level">
+            <div>Similarity level: <span>{{$ctrl.similarityLevel}}%</span></div>
+            <rzslider rz-slider-model="$ctrl.similarityLevel" rz-slider-options="$ctrl.slider.options"></rzslider>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<span us-spinner="{position: 'fixed', color: '#428bca'}" spinner-key="spinner-1"></span>     
+<div class="color-search__content">   
+    <div class="color-search__header">
+        <div ng-click="$ctrl.goToMain()" class="color-search__logo"><div class="color-search__logo-image"></div></div>
+        <div class="color-search__navigation">
+            <a class="btn-bodyless btn-bodyless-default" ng-click="$ctrl.goToGuide()">Guide</a><span class="color-search__separator"></span>
+            <a class="btn-bodyless btn-bodyless-default" ng-click="$ctrl.goToSettings()">Archive</a>
+        </div>
+    </div>
+    <ui-view name = "pages">
+        <main ng-show="$ctrl.page == 'main'"></main> 
+        <guide ng-show="$ctrl.page == 'guide'"></guide>  
+        <profiles-viewer ng-show="$ctrl.page === 'profiles'"></profiles-viewer>  
+    </ui-view>
+</div>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: color-adjuster/color-adjuster.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: color-adjuster/color-adjuster.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import "chartist/dist/scss/chartist.scss";
+import angularChartist from 'angular-chartist.js';
+import slider from 'angularjs-slider';
+import './scss/color-adjuster.scss';
+import template from './template/color-adjuster.html';
+
+/**
+* @module color-adjuster
+* @requires module:angularjs-slider
+* @requires module:angular-chartist
+*/
+angular.module('color-adjuster', [slider, angularChartist])
+/** Adjusting of all selected colors (saturation &amp; lightness).
+* The global distribution of selected colors is shown in the chart.
+* @member {Component} colorAdjuster
+* @property {ColorAdjusterCtrl} controller
+* @memberof module:color-adjuster
+* @instance
+*/
+.component('colorAdjuster', {
+    template,
+    /**
+    * Controller for 'colorAdjuster' component.
+    * @constructor ColorAdjusterCtrl
+    * @param {Service} $rootScope Angularjs '$scope'
+    * @param {Service} $timeout Angularjs '$timeout' service
+    * @param {Service} colorService 'colorService' service
+    * @param {Service} textColors 'textColors' service
+    * @see colorAdjuster component
+    * @memberof module:color-adjuster
+    */
+    controller: class ColorAdjusterCtrl {
+
+        static get $inject() {
+            return ['$scope', '$timeout', 'colorService', 'textColors'];
+        }
+
+        constructor($scope, $timeout, colorService, textColors) {
+            this.$scope = $scope;
+            this.$timeout = $timeout;
+            this._colorService = colorService;
+            this.textColors = textColors;
+            this.chart = {};
+            const self = this;
+            this.chart.options = {
+                showLabel: false,
+                donut: true,
+                donutWidth: 40,
+                donutSolid: true,
+                startAngle: 270,
+            };
+            this.chart.data = {};
+            this.chart.events = {
+                draw: (context) => {
+                    if (context.type === "slice") {
+                        context.element.attr({
+                            style: `fill: ${context.meta}`,
+                        });
+                    }
+                },
+            };
+            this.chart.responsive = [
+                ['screen and (min-width: 500px)', {
+                    donutWidth: 30,
+                }],
+            ];
+            this.slider = {
+                value: 50,
+                options: {
+                    floor: 0,
+                    ceil: 200,
+                    step: 1,
+                    onChange: () => {
+                        textColors.calculateAdjustedColors();
+                        self._colorsChanged();
+                    },
+                    onEnd: () => {
+                        textColors.calculateAdjustedColors();
+                        self._colorsChanged();
+                    },
+                    hidePointerLabels: true,
+                    hideLimitLabels: true,
+                    disabled: false,
+                },
+            };
+            this.$scope.$on("colorsChainged", this._colorsChanged.bind(this));
+            this.$scope.$on("refresh", () => {
+                this.chart.data = {};
+                this._colorsChanged();
+            });
+        }
+
+        /**
+        * @method toggle
+        * @memberof module:color-adjuster.ColorAdjuster
+        * @instance
+        */
+        toggle() {
+            this.$timeout(() => {
+                this.$scope.$broadcast('rzSliderForceRender');
+            }, 0, false);
+        }
+
+        /**
+        * @method getS
+        * @return {string}
+        * @memberof module:color-adjuster.ColorAdjuster
+        * @instance
+        */
+        getS() {
+            return this.textColors.sPercentage &lt; 100 ? `-${Math.abs(this.textColors.sPercentage - 100)}` :
+            `+${Math.abs(this.textColors.sPercentage - 100)}`;
+        }
+
+        /**
+        * @method getL
+        * @return {string}
+        * @memberof module:color-adjuster.ColorAdjuster
+        * @instance
+        */
+        getL() {
+            return this.textColors.lPercentage &lt; 100 ? `-${Math.abs(this.textColors.lPercentage - 100)}` :
+            `+${Math.abs(this.textColors.lPercentage - 100)}`;
+        }
+
+        _colorsChanged() {
+            const tempColors = new Map();
+            const data = [];
+            for (const [key, color] of this.textColors.adjustedColorOccurence.entries()) {
+                const keyColor = this._colorService.getColorInstance().setColorFromString(key);
+                const hex = this._colorService.hslToHexString(keyColor);
+                let count = tempColors.has(hex) ? tempColors.get(hex) : 0;
+                count += color.weight;
+                tempColors.set(hex, count);
+            }
+            for (const [hex, count] of tempColors) {
+                data.push({ value: count, meta: hex });
+            }
+            this.chart.data.series = data;
+        }
+    },
+});
+
+export default 'color-adjuster';
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-color-adjuster.html">color-adjuster</a></li><li><a href="module-color-search.html">color-search</a></li><li><a href="module-color-toolbar.html">color-toolbar</a></li><li><a href="module-db.html">db</a></li><li><a href="module-dialog.html">dialog</a></li><li><a href="module-guide.html">guide</a></li><li><a href="module-image-finder.html">image-finder</a></li><li><a href="module-jsonrpc.html">jsonrpc</a></li><li><a href="module-main.html">main</a></li><li><a href="module-profiles.html">profiles</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-text-colorizer.html">text-colorizer</a></li></ul><h3>Classes</h3><ul><li><a href="module-color-adjuster.ColorAdjusterCtrl.html">ColorAdjusterCtrl</a></li><li><a href="module-color-search.ColorSearch.html">ColorSearch</a></li><li><a href="module-color-search.ColorService.html">ColorService</a></li><li><a href="module-color-search.ColorSet.html">ColorSet</a></li><li><a href="module-color-search.HSLColor.html">HSLColor</a></li><li><a href="module-color-search.Login.html">Login</a></li><li><a href="module-color-search.Routes.html">Routes</a></li><li><a href="module-color-search.Settings.html">Settings</a></li><li><a href="module-color-search.SettingsDAO.html">SettingsDAO</a></li><li><a href="module-color-search.TextColors.html">TextColors</a></li><li><a href="module-color-toolbar.ColorToolbarCtrl.html">ColorToolbarCtrl</a></li><li><a href="module-image-finder.FlickrInspectingStrategy.html">FlickrInspectingStrategy</a></li><li><a href="module-image-finder.Image.html">Image</a></li><li><a href="module-image-finder.ImageFinderCtrl.html">ImageFinderCtrl</a></li><li><a href="module-image-finder.ImageInspector.html">ImageInspector</a></li><li><a href="module-image-finder.Images.html">Images</a></li><li><a href="module-image-finder.ImagesRPCService.html">ImagesRPCService</a></li><li><a href="module-image-finder.InspectingBatch.html">InspectingBatch</a></li><li><a href="module-main.Main.html">Main</a></li><li><a href="module-profiles.ColorProfile.html">ColorProfile</a></li><li><a href="module-profiles.ColorProfiles.html">ColorProfiles</a></li><li><a href="module-profiles.ColorProfilesDAO.html">ColorProfilesDAO</a></li><li><a href="module-settings.SettingsCtrl.html">SettingsCtrl</a></li><li><a href="module-text-colorizer.Caret.html">Caret</a></li><li><a href="module-text-colorizer.Parser.html">Parser</a></li><li><a href="module-text-colorizer.TextColorizerCtrl.html">TextColorizerCtrl</a></li><li><a href="module-text-colorizer.WordNode.html">WordNode</a></li><li><a href="module-text-colorizer.Words.html">Words</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 10 2018 06:22:49 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

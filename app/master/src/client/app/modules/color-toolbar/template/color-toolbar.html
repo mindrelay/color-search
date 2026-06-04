@@ -1,0 +1,48 @@
+<div class="toolbar">
+    <div class="toolbar__content">
+        <div class="toolbar__left">
+            <div class="toolbar__colorbox" ng-click="$ctrl.selectColor($event)">
+                <div ng-repeat="c in $ctrl.colors track by $index">
+                    <div class="toolbar__color" data-toolbar-color="{{$index}}" ng-style="{'background-color': c}"></div>
+                </div>
+                <div class="toolbar__color" data-toolbar-color="null"><span class="glyphicon glyphicon-remove toolbar__clear"></span></div>
+                <div style="clear:both;"></div>
+            </div>
+        </div>  
+        <div class="toolbar__center">
+            <div class="toolbar__adjuster">
+                <div class="toolbar__sliders" ng-disabled="!$ctrl.color.isSet()">
+                    <div class="toolbar__sliders-content">
+                        <div class="toolbar__saturation-slider">
+                            <span class="glyphicon glyphicon-signal"></span> <span>{{$ctrl.color.isSet() ? $ctrl.color.s : 0 }}%</span>
+                            <rzslider rz-slider-model="$ctrl.color.s" rz-slider-options="$ctrl.slider.options"></rzslider>
+                        </div>
+                        <div class="toolbar__lightness-slider">
+                            <span class="glyphicon glyphicon-adjust icon-flipped"></span>  <span>{{$ctrl.color.isSet() ? $ctrl.color.l : 0 }}%</span>
+                            <rzslider rz-slider-model="$ctrl.color.l" rz-slider-options="$ctrl.slider.options"></rzslider>
+                        </div>
+                    </div>
+                </div>
+                <div class="toolbar__weight">
+                    <div class="toolbar__weight-title">Weight</div>
+                    <div class="toolbar__weight-controls">
+                        <div class="toolbar__weight-buttons btn-group-vertical" role="group">
+                            <a type="button" class="btn btn-default btn-block btn-square toolbar__weight-button" ng-click="$ctrl.increaseWeight()">+</a>
+                            <a type="button" class="btn btn-default btn-block btn-square toolbar__weight-button" ng-click="$ctrl.decreaseWeight()">-</a>
+                        </div>
+                        <div class="toolbar__weight-value">{{$ctrl.color.weight}}</div>
+                    </div>
+                </div>
+            </div>        
+        </div>             
+        <div class="toolbar__right">
+            <div class="toolbar__selected">
+                <div class="toolbar__selected-color" ng-click="$ctrl.wordLinking = !$ctrl.wordLinking" ng-style="{'background-color': $ctrl.color}"><span ng-show="$ctrl.wordLinking" class="toolbar__linking-icon glyphicon glyphicon-link" ng-style="{color: $ctrl.linkingIconColor()}"></span></div>
+                <div class="toolbar__selected-background"></div>                   
+            </div> 
+            <div class="toolbar__close" ng-click="$ctrl.close()">
+                <span class="glyphicon glyphicon-menu-up toolbar__close-icon"></span>
+            </div>   
+        </div> 
+    </div>
+</div>

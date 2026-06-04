@@ -1,0 +1,71 @@
+{
+    "loginRequired": true,
+    "password": "<set-admin-password>",
+    "host": "LocalHost",
+    "database": "Couchbase",
+    "saveLimit": 30000,
+    "imgsPath": "server/resources/public_imgs",
+    "id": 1,
+    "nodes": [
+        {
+            "url": "http://<slave-node-host>:3000",
+            "id": 2,
+            "secret": "<set-shared-secret>",
+            "timeout": 10000
+        }
+    ],
+    "textSimilarity":{
+        "alpha": 0.7,
+        "hashes": 50,
+        "path": "./server/core/text-similarity/vecs/vecs300.txt",
+        "forceReload": false
+    },
+    "textTranslator":{
+        "enabled": true,
+        "services": ["GoogleService"]
+    },
+    "imageTagger":{
+        "enabled": true,
+        "similarityThreshold": 20,
+        "services": ["ClarifaiService", "ImaggaService"]
+    },
+    "imageSaver":{
+        "enabled": false,
+        "sleepTime": 3600000,
+        "timeGap": 1000,
+        "sleepIfTaggingFailed": false,
+        "sleepIfTranslationFailed": false,
+        "sources": [
+            {
+                "name": "local",
+                "enabled": false,
+                "step": 20,
+                "path": "server/resources/imgs/",
+                "publicPath": "server/resources/public_imgs"
+            },
+            {
+                "name": "flickr",
+                "enabled": true,
+                "step" : 20,
+                "wordLists": ["en-US.txt", "de-DE.txt"],
+                "randomization": 0.5
+            }
+        ]
+    },
+    "searchRequest":{
+        "similarityThreshold": 80,
+        "defaultDistance": "euclidean",
+        "textFeatureWeight" : 0.9,
+        "maxResult": 5000
+    },
+    "index":{
+        "lshEnabled": true,
+        "max": 30000,
+        "dimensions": 199,
+        "delta": 0.1,
+        "p": 0.5,
+        "k": 5,
+        "w": 0.5,
+        "family": "euclidean"
+    }
+}

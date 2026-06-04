@@ -1,0 +1,48 @@
+.color-adjuster{
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    
+    &__chart{
+        align-self: center;
+        max-width: 200px;
+        max-height: 200px;
+        min-width: 200px;
+        min-height: 200px;
+        border: 1px dotted #ddd;
+        stroke: black;
+        stroke-width: 0.2px;
+    }
+    &__sliders{
+        align-self: center;
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        align-content: center;
+    }
+    &__sliders-content {
+        width: 100%;
+    }
+    &__slider{
+        margin-bottom: 10px;
+        z-index: 1 !important;
+    }
+}
+
+@media screen and  (min-width: 500px) {
+    .color-adjuster{
+        flex-direction: row;
+        &__chart{
+            align-self: center;
+            max-width: 150px;
+            max-height: 150px;
+            min-width: 150px;
+            min-height: 150px;
+        } 
+        &__sliders{
+            margin-left: 20px;
+            margin-top: 0px;
+        }
+    }
+}

@@ -1,0 +1,5 @@
+<div class="error-dialog">
+    <h4><span class="glyphicon glyphicon-warning-sign"></span>  {{$ctrl.title}}</h4>
+    <p>{{$ctrl.description}}</p>
+    <a ng-show="$ctrl.button" ng-click="$ctrl.handle()" class="btn btn-danger btn-block"><span ng-show="$ctrl.icon" ng-class="'glyphicon glyphicon-{{$ctrl.icon}}'"></span> {{$ctrl.buttonTitle}}</a>
+</div>

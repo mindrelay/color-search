@@ -1,0 +1,60 @@
+.profiles-viewer{
+    margin-top: 10px;
+    padding: 10px;
+    word-break: break-all;
+
+    &__profiles {
+        max-width: 200px;
+    }
+    &__search {
+        margin-top: 10px;
+        font-family: AnonymousProB, monospace;
+    }
+    &__search-input {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    &__section-title{
+        font-weight: bold;
+        margin-top: 20px;
+        font-size: 1.2em;
+    }
+    &__section-word{
+        align-self: center;
+        word-break: break-all;
+        margin-right: 15px;
+        cursor: pointer;
+    }
+    &__space{
+        align-self: center;
+        border-bottom: 1px dotted #ddd;
+        flex-grow: 2;
+    }
+    &__section{
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        font-family: AnonymousProB, monospace;
+    }
+    &__color{
+        display: block;
+        align-self: center;
+        margin-left: 15px;
+        min-width: 15px;
+        min-height: 15px;
+        border: 1px solid #ddd;
+    }
+    &__delete{
+        color: #d9534f;
+        align-self: center;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    &__words{
+        margin-top: 10px;
+    }
+    &__search-result{
+        margin-top: 30px;
+    }
+}

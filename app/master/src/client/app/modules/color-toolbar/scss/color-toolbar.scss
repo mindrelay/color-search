@@ -1,0 +1,217 @@
+color-toolbar{
+
+    &.hide{
+        visibility: hidden;
+    } 
+    
+    .toolbar{
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        background-color: white;
+        position: fixed;
+        display: flex; 
+        justify-content: center;
+        align-content: center;
+        z-index: 8;
+        border-bottom: 1px solid #ddd;
+        height: 200px;
+
+        &__content{
+            display: flex; 
+            justify-content: center;
+            align-content: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        &__center{
+            display: flex;
+            align-self: center;
+            width: 100%;
+            height: 100%;
+        } 
+        &__adjuster{
+            height: 100%;
+            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        &__right{
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            width: 55px;
+        }     
+        &__left{
+            width: 120px;
+            min-width: 120px;
+        }     
+        &__color{
+            width: 40px;
+            height: 40px;
+            float: left;
+            border: 1px solid #ddd;
+            padding: 9px;
+            cursor: pointer;
+        }
+        &__clear{
+            font-size: 1.5em;
+            color: #737373;
+            margin: auto;
+        }
+        &__sliders{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        &__sliders-content{
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            width: 100%;
+            max-width: 400px !important;
+        }
+        &__saturation-slider {
+            margin-bottom: 10px;
+        }
+        &__lightness-slider {
+            margin-bottom: 10px;
+        }
+        &__weight{
+            padding: 0px;
+            margin-top: 7px;
+        }
+        &__weight-title{
+            margin-bottom: 5px;
+            text-align: center;
+            line-height: 25px;
+            width: 100%;
+            outline: 1px dotted #ddd;
+            outline-offset: -1px;
+            background-color: rgb(250, 250, 250);
+        }
+        &__weight-controls{
+            display: flex;
+            justify-content: space-between;
+        }
+        &__weight-buttons{
+            width: 100%;
+        }
+        &__weight-button{
+            border-radius: 0 !important;
+            border: 1px dotted #ddd;
+            padding: 3px;
+        }
+        &__weight-button:hover{
+            background: rgb(255, 255, 255);
+        }
+        &__weight-button:active{
+            background: rgb(250, 250, 250) !important;
+            box-shadow: none;
+        }
+        &__weight-value{
+            font-size: 1.5em;
+            margin-left: 6px;
+            text-align: center; 
+            align-self: center;
+            width: 100px;
+            height: 100%;
+        }
+        &__close{
+            position: absolute;
+            cursor: pointer;
+            z-index: 15;  
+            bottom: 4px;
+        }
+        &__close-icon{
+            font-size: 1.5em;
+        }
+        &__selected{
+            position: relative;
+            height: 100%;
+            width: 100%; 
+            margin-top: 0px;
+        }
+        &__selected-color{
+            position: relative;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            z-index: 10; 
+            width: 100%;
+            height: 75%;
+            cursor: pointer;
+        }
+        &__selected-background{
+            position: absolute; 
+            z-index: 9; 
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 75%;
+            background-size: 40px;  
+            background-image: url("../img/chess.png"); 
+            background-repeat: repeat;
+            filter: opacity(.1);
+        }
+        &__linking-icon{
+            align-self: center;
+            opacity: 0.5;
+        }
+        &__close{
+            position: absolute;
+            cursor: pointer;
+            z-index: 15; 
+        }
+        &__close-icon{
+            font-size: 1.5em;
+        }
+    }
+    
+    @media screen and (min-width: 500px){
+        .toolbar{
+            height: 120px; 
+            &__left{
+                width: 200px;
+                min-width: 200px;
+            } 
+            &__adjuster{ 
+                display: flex;
+                align-content: center;
+                justify-content: space-evenly;
+                height: 100%;
+                width: 100%;
+            }
+            &__weight{
+                align-self: center;
+                width: 100%;
+                max-width: 200px;
+                margin-top: 0px;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+            &__close{
+                bottom: 8px;
+            }
+            &__sliders{
+                margin-top: 0px;
+                align-self: center;
+                min-width: 70px; 
+                max-width: 300px;
+                margin-left: 20px;
+            }
+            &__selected-color{
+                height: 60%;
+            }
+            &__selected-background{
+                height: 60%;
+            }
+        }
+    }
+}

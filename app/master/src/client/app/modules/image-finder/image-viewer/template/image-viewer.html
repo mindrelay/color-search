@@ -1,0 +1,29 @@
+<div class="image-viewer">    
+    <div class="image-viewer__topline">
+        <div class="image-viewer__topline-main">
+            <div class="image-viewer__topline-content">
+                <a class="image-viewer__original" target="_blank" href="{{$ctrl.selectedImage.originalURL}}">Original</a>
+                <span class="image-viewer__separator"></span>
+                <span class="image-viewer__score">{{$ctrl.getScore()}}%</span>
+                <span class="image-viewer__separator"></span>
+                <a class="image-viewer__save" ng-click="$ctrl.save()">
+                    <span class="glyphicon glyphicon-floppy-save image-viewer__save-icon"></span>
+                </a>
+                <div ng-click="$ctrl.close($event)" class="image-viewer__close-button" imageviewer-close>
+                    <span class="glyphicon glyphicon-remove image-viewer__close-icon" aria-hidden="true" imageviewer-close></span>
+                </div>
+            </div> 
+        </div>
+        <div class="image-viewer__info">
+            <div class="image-viewer__attribution">
+                <div class="image-viewer__title">{{$ctrl.selectedImage.title}}</div>
+                <div>by</div>
+                <div class="image-viewer__owner">{{$ctrl.selectedImage.owner}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="image-viewer__image-container" ng-click="$ctrl.close($event)" imageviewer-close>
+        <img class="image-viewer__image" src="{{$ctrl.selectedImage.url}}" ng-load="$ctrl.loaded($event, $ctrl.selectedImage)" ng-error="$ctrl.loadingError($ctrl.selectedImage)">
+        <a class="image-viewer__download"></a>
+    </div>
+</div>

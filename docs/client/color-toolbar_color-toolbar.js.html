@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: color-toolbar/color-toolbar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: color-toolbar/color-toolbar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import slider from 'angularjs-slider';
+import './scss/color-toolbar.scss';
+import template from './template/color-toolbar.html';
+
+/**
+* @module color-toolbar
+* @requires module:angularjs-slider
+*/
+angular.module('color-toolbar', [slider])
+/**
+* Adjusting and vizualization of selected word color. Each color modification is 
+* transfered to the main component through the 'colorModified' binding.
+* The word color selection in the main component is transfered
+* to the toolbar component through 'inputColor' binding.
+* @member {Component} colorToolbar
+* @memberof module:color-toolbar
+* @property {ColorToolbarCtrl} controller
+* @property {String} template
+* @property {Object} bindings {colorModified: '&amp;', onClose: '&amp;', closed: '&lt;', inputColor: '&lt;'}
+* @instance
+*/
+.component('colorToolbar', {
+    template,
+    bindings: {
+        colorModified: '&amp;',
+        onClose: '&amp;',
+        closed: '&lt;',
+        inputColor: '&lt;',
+    },
+    /**
+    * Controller for 'colorToolbar' component.
+    * @constructor ColorToolbarCtrl
+    * @param {Service} $scope Angularjs '$scope' service
+    * @param {Service} $timeout Angularjs '$timeout' service
+    * @param {Service} $element Angularjs '$element' service
+    * @param {Service} colorService 'colorService' service
+    * @param {Factory} calculateFontColor 'calculateFontColor' factory
+    * @see colorToolbar component
+    * @memberof module:color-toolbar
+    */
+    controller: class ColorToolbarCtrl {
+        static get $inject() {
+            return ['$scope', '$timeout', '$element', 'colorService', 'calculateFontColor'];
+        }
+        constructor($scope, $timeout, $element, colorService, calculateFontColor) {
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$timeout = $timeout;
+            this._colorService = colorService;
+            this._calculateFontColor = calculateFontColor;
+            this.wordLinking = true;
+            this.colors = [];
+            for (let i = 0; i &lt; 360; i += 30) {
+                const color = colorService.getColorInstance({ h: i, s: 80, l: 50 });
+                this.colors.push(color);
+            }
+            const black = colorService.getColorInstance({ h: 0, s: 0, l: 0 }).setAchromatic();
+            const white = colorService.getColorInstance({ h: 0, s: 0, l: 100 }).setAchromatic();
+            this.colors.push(black);
+            this.colors.push(white);
+            this.color = colorService.getColorInstance();
+            const self = this;
+            this.slider = {
+                value: 50,
+                options: {
+                    floor: 0,
+                    ceil: 100,
+                    step: 1,
+                    onChange() {
+                        self.colorModified({ color: self.color, linking: self.wordLinking });
+                    },
+                    onEnd() {
+                        self.colorModified({ color: self.color, linking: self.wordLinking });
+                    },
+                    hidePointerLabels: true,
+                    hideLimitLabels: true,
+                    disabled: true,
+                },
+            };
+        }
+
+        $onInit() {
+            if (this.closed === true) {
+                this.close();
+            }
+        }
+
+        $onChanges(changes) {
+            const color = changes.inputColor.currentValue;
+            if (color) {
+                this.setCurrentColor(color);
+                if (this.$element.hasClass("hide")) {
+                    this.open();
+                }
+            }
+        }
+
+        /**
+        * @method increaseWeight
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        increaseWeight() {
+            const self = this;
+            if (this.color &amp;&amp; this.color.isSet() &amp;&amp; this.color.weight &lt; 100) {
+                this.color.weight ++;
+                this.colorModified({ color: self.color, linking: self.wordLinking });
+            }
+        }
+
+        /**
+        * @method decreaseWeight
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        decreaseWeight() {
+            const self = this;
+            if (this.color &amp;&amp; this.color.isSet() &amp;&amp; this.color.weight > 1) {
+                self.color.weight --;
+                this.colorModified({ color: self.color, linking: self.wordLinking });
+            }
+        }
+
+        /**
+        * @method endSlide
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        endSlide() {
+            const self = this;
+            this.colorModified({ color: self.color, linking: self.wordLinking });
+        }
+
+        /**
+        * @method linkingIconColor
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        linkingIconColor() {
+            return this.color.isSet() ? this._calculateFontColor(this.color) : "black";
+        }
+
+        /**
+        * @method selectColor
+        * @param {Object} $event Angularjs $event object
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        selectColor($event) {
+            const self = this;
+            const target = $event.target;
+            if (target.hasAttribute("data-toolbar-color") || target.parentElement.hasAttribute("data-toolbar-color")) {
+                $event.stopPropagation();
+                const colorElement = target.hasAttribute("data-toolbar-color") ? target : target.parentElement;
+                const colorIndex = angular.element(colorElement).attr("data-toolbar-color");
+                if (colorIndex &amp;&amp; colorIndex !== "null") {
+                    const color = this._colorService.getColorInstance(this.colors[colorIndex]);
+                    this.changeColor(color);
+                    this.slider.options.disabled = this.color.isAchromatic();
+                } else {
+                    this.setInitialColor();
+                }
+                this.colorModified({ color: self.color, linking: self.wordLinking });
+            }
+        }
+
+        /**
+        * @method changecolor
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        changeColor(color) {
+            color.weight = this.color.weight;
+            if (!color.isAchromatic() &amp;&amp; !this.color.isAchromatic()
+                &amp;&amp; this.color.s &amp;&amp; this.color.l) {
+                color.s = this.color.s;
+                color.l = this.color.l;
+            }
+            this.color = color;
+        }
+
+        /**
+        * @method setCurrentColor
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        setCurrentColor(color) {
+            if (color &amp;&amp; color.isSet()) {
+                this.color = color;
+                this.slider.options.disabled = this.color.isAchromatic();
+            } else {
+                this.setInitialColor();
+            }
+        }
+
+        /**
+        * @method setInitialColor
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        setInitialColor() {
+            this.color = this._colorService.getColorInstance();
+            this.slider.options.disabled = true;
+        }
+
+        /**
+        * @method close
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        close() {
+            this.$element.addClass("hide");
+            this.onClose();
+        }
+
+        /**
+        * @method open
+        * @memberof module:color-toolbar.ColorToolbar
+        * @instance
+        */
+        open() {
+            this.$element.removeClass("hide");
+            this.$scope.$broadcast('rzSliderForceRender');
+        }
+    },
+});
+
+export default 'color-toolbar';
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-color-adjuster.html">color-adjuster</a></li><li><a href="module-color-search.html">color-search</a></li><li><a href="module-color-toolbar.html">color-toolbar</a></li><li><a href="module-db.html">db</a></li><li><a href="module-dialog.html">dialog</a></li><li><a href="module-guide.html">guide</a></li><li><a href="module-image-finder.html">image-finder</a></li><li><a href="module-jsonrpc.html">jsonrpc</a></li><li><a href="module-main.html">main</a></li><li><a href="module-profiles.html">profiles</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-text-colorizer.html">text-colorizer</a></li></ul><h3>Classes</h3><ul><li><a href="module-color-adjuster.ColorAdjusterCtrl.html">ColorAdjusterCtrl</a></li><li><a href="module-color-search.ColorSearch.html">ColorSearch</a></li><li><a href="module-color-search.ColorService.html">ColorService</a></li><li><a href="module-color-search.ColorSet.html">ColorSet</a></li><li><a href="module-color-search.HSLColor.html">HSLColor</a></li><li><a href="module-color-search.Login.html">Login</a></li><li><a href="module-color-search.Routes.html">Routes</a></li><li><a href="module-color-search.Settings.html">Settings</a></li><li><a href="module-color-search.SettingsDAO.html">SettingsDAO</a></li><li><a href="module-color-search.TextColors.html">TextColors</a></li><li><a href="module-color-toolbar.ColorToolbarCtrl.html">ColorToolbarCtrl</a></li><li><a href="module-image-finder.FlickrInspectingStrategy.html">FlickrInspectingStrategy</a></li><li><a href="module-image-finder.Image.html">Image</a></li><li><a href="module-image-finder.ImageFinderCtrl.html">ImageFinderCtrl</a></li><li><a href="module-image-finder.ImageInspector.html">ImageInspector</a></li><li><a href="module-image-finder.Images.html">Images</a></li><li><a href="module-image-finder.ImagesRPCService.html">ImagesRPCService</a></li><li><a href="module-image-finder.InspectingBatch.html">InspectingBatch</a></li><li><a href="module-main.Main.html">Main</a></li><li><a href="module-profiles.ColorProfile.html">ColorProfile</a></li><li><a href="module-profiles.ColorProfiles.html">ColorProfiles</a></li><li><a href="module-profiles.ColorProfilesDAO.html">ColorProfilesDAO</a></li><li><a href="module-settings.SettingsCtrl.html">SettingsCtrl</a></li><li><a href="module-text-colorizer.Caret.html">Caret</a></li><li><a href="module-text-colorizer.Parser.html">Parser</a></li><li><a href="module-text-colorizer.TextColorizerCtrl.html">TextColorizerCtrl</a></li><li><a href="module-text-colorizer.WordNode.html">WordNode</a></li><li><a href="module-text-colorizer.Words.html">Words</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 10 2018 06:22:50 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<div class="main">
+    <color-toolbar closed="true" input-color="$ctrl.selectedWord.color" color-modified="$ctrl.colorModified(color, linking)" on-close="$ctrl.selectedWord=null"></color-toolbar>  
+    <div class="main__colorizer">
+        <text-colorizer on-wordselect="$ctrl.selectWord(word)"></text-colorizer>
+        <div class="main__colorizer-controls">
+            <a class="btn-bodyless btn-bodyless-success main__colorizer-button" ng-click="$ctrl.inputComplete()"><span class="glyphicon glyphicon-ok"></span> Go!</a><span class="main__colorizer-separator"></span>
+            <a class="btn-bodyless main__colorizer-button" ng-click="$ctrl.edit()" ><span class="glyphicon glyphicon-pencil"></span> Edit</a><span class="main__colorizer-separator"></span>
+            <a class="btn-bodyless btn-bodyless-danger main__colorizer-button" ng-click="$ctrl.decolorizeDialog()"><span class="glyphicon glyphicon-remove"></span> Clear</a><span class="main__colorizer-separator"></span> 
+            <a class="btn-bodyless btn-bodyless-danger main__colorizer-button" ng-click="$ctrl.dropDialog()" ><span class="glyphicon glyphicon-trash"></span> Drop</a> 
+        </div>                            
+    </div>
+    <div class="main__adjustments-section main__section">
+        <div class="main__section-content">
+            <div class="main__section-title">
+                <div class="main__section-label">Adjustments & Profiles</div>
+            </div>
+            <div class="main__adjustments">
+                <div class="main__adjustments-content">
+                    <color-adjuster class="main__adjuster"></color-adjuster>
+                    <div class="main__profiles">
+                        <color-profiles colors="$ctrl.colors" on-load-profile="$ctrl.loadColorProfile(colors, sPercentage, lPercentage)"></color-profiles>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main__settings-section main__section">
+        <div class="main__section-content">
+            <div class="main__section-title">
+                <div ng-click="$ctrl.toggleSettings()" class="main__section-label main__settings-label"><span ng-class="$ctrl.settingsOpened ? 'dropup' : 'dropdown'"><span class="caret main__caret"></span></span> Settings</div>
+            </div>
+            <div class="main__settings" ng-show="$ctrl.settingsOpened">
+                <div class="main__settings-content">
+                    <settings></settings>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <div class="main__find-container">    
+        <a class="btn btn-success main__find-button" ng-click="$ctrl.search()"><span class="glyphicon glyphicon-search"></span> Search!</a> 
+    </div>
+    <div ng-show="$ctrl.resultFound" class="main__image-finder">
+        <image-finder search="$ctrl.searchData" on-images-found="$ctrl.imagesFound(images)"></image-finder>
+    </div>
+</div>

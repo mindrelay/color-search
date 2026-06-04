@@ -1,0 +1,15 @@
+<div class="color-adjuster">
+    <div class="color-adjuster__chart"><chartist class="ct-chart ct-square chart" chartist-events="$ctrl.chart.events" chartist-data="$ctrl.chart.data" chartist-chart-options="$ctrl.chart.options" chartist-responsive-options="$ctrl.chart.responsive" chartist-chart-type="Pie"></chartist></div>
+    <div class="sliders color-adjuster__sliders">
+        <div class="color-adjuster__sliders-content">
+            <div class="color-adjuster__slider">
+                <div><span class="glyphicon glyphicon-signal"></span> <span>{{$ctrl.getS()}}%</span></div>
+                <rzslider rz-slider-model="$ctrl.textColors.sPercentage" rz-slider-options="$ctrl.slider.options"></rzslider>
+            </div>
+            <div class="color-adjuster__slider">
+                <div><span class="glyphicon glyphicon-adjust icon-flipped"></span>  <span>{{$ctrl.getL()}}%</span></div> 
+                <rzslider rz-slider-model="$ctrl.textColors.lPercentage" rz-slider-options="$ctrl.slider.options"></rzslider>
+            </div>
+        </div>
+    </div>
+</div>

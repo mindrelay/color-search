@@ -1,0 +1,25 @@
+<div class="profiles-viewer">
+    <h4>Profiles archive</h4>
+    <select class="profiles-viewer__profiles" ng-change="$ctrl.loadColorProfile()" ng-model="$ctrl.profileName">
+        <option ng-show="$ctrl.colorProfiles.profileNames.length < 1" value ="" selected>Select profile...</option>
+        <option ng-repeat="profile in $ctrl.colorProfiles.profileNames" data-colorprofiles-profile="{{$index}}" value="{{profile}}">{{profile}}</option>
+    </select>
+    <div class="profiles-viewer__search">
+        <input class="profiles-viewer__search-input" type="text" ng-model="$ctrl.searchWord" placeholder="search by word...">
+    </div>
+    <h5 ng-show="$ctrl.selectedProfile">Total: {{$ctrl.countProfileWords()}} {{$ctrl.countProfileWords() > 1 ? "words" : "word"}}</h6>
+    <div ng-show="!$ctrl.foundWord" ng-click="$ctrl.clickHandler($event)" class="profiles-viewer__words" infinite-scroll='$ctrl.showMore()' infinite-scroll-distance='0'>
+        <div ng-repeat="word in $ctrl.words track by word.word" class="profiles-viewer__section">
+            <span ng-show="$ctrl.selectedWord === word.word" class="glyphicon glyphicon-remove profiles-viewer__delete" ng-attr-delete="{{$ctrl.selectedWord === word.word ? word.word : undefined}}"></span>
+            <div ng-class="{'profiles-viewer__section-title': word.type === 'title', 'profiles-viewer__section-word': word.type === 'word'}" ng-attr-word="{{word.type === 'word' ? word.word : undefined}}">{{word.word}}</div>
+            <div ng-show="word.type === 'word'" class="profiles-viewer__space"></div>
+            <div ng-show="word.type === 'word'" class="profiles-viewer__color" ng-style="{'background-color': word.color}"></div>
+        </div>
+    </div>
+    <div ng-click="$ctrl.clickHandler($event)" ng-show="$ctrl.foundWord" class="profiles-viewer__search-result profiles-viewer__section">
+        <span ng-show="$ctrl.selectedWord === $ctrl.foundWord.word" class="glyphicon glyphicon-remove profiles-viewer__delete" ng-attr-delete="{{$ctrl.foundWord.word}}"></span>
+        <div class="profiles-viewer__section-word" ng-attr-word="{{$ctrl.foundWord.word}}">{{$ctrl.foundWord.word}}</div>
+        <div class="profiles-viewer__space"></div>
+        <div class="profiles-viewer__color" ng-style="{'background-color': $ctrl.foundWord.color}"></div>
+    </div>
+</div>

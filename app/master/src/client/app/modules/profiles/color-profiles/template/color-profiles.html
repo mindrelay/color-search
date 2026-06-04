@@ -1,0 +1,31 @@
+<div class="color-profiles">
+    <select class="color-profiles__profiles" ng-change="$ctrl.selectProfile()" ng-model="$ctrl.colorProfiles.loadedProfile.name">
+        <option ng-show="$ctrl.colorProfiles.profileNames.length < 1" value ="">Select profile...</option>
+        <option ng-repeat="profileName in $ctrl.colorProfiles.profileNames" value="{{profileName}}">{{profileName}}</option>
+    </select>
+    <div class="color-profiles__controls">
+        <a ng-click="$ctrl.applyProfileDialog()" class="btn-bodyless btn-bodyless-primary" ng-class="$ctrl.haveProfiles() ? '' : 'disabled'"><span class="glyphicon glyphicon-tint"></span> Apply</a>
+        <a ng-click="$ctrl.updateProfileDialog()" class="btn-bodyless" ng-class="$ctrl.haveProfiles() ? '' : 'disabled'"><span class="glyphicon glyphicon-floppy-save"></span> Update</a>
+        <a ng-click="$ctrl.toggleNewProfile()" class="btn-bodyless btn-bodyless-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</a>
+        <a ng-click="$ctrl.deleteProfileDialog()" class="btn-bodyless btn-bodyless-danger"  ng-class="$ctrl.haveProfiles() ? '' : 'disabled'"><span class="glyphicon glyphicon-trash"></span> Drop</a>
+    </div>
+    <div ng-show="$ctrl.openCreateProfile" class="color-profiles__create-profile">
+        <input ng-model="$ctrl.newProfileName" type="text" class="form-control create-profile__profile-name" placeholder="Profile">
+        <a ng-click="$ctrl.saveProfile()" class="btn btn-success btn-block color-profiles__save-profile"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save</a>
+    </div>
+    <div ng-show="$ctrl.openConflicts" class="color-profiles__conflicts">
+        <div class="color-profiles__conflict-title"><span> Resolve conflicts</span></div>
+        <ul class="color-profiles__conflict-colors">
+            <li ng-repeat="item in $ctrl.conflictColors track by $index">
+            {{item.word}}
+                <form>
+                    <div class="radio" ng-repeat="color in item.colors track by $index">
+                        <label><input  ng-model="$ctrl.conflictColors[$parent.$index].selected" ng-value="color" type="radio"><span ng-show="color.isSet()" class="color-profiles__conflict-color" ng-style="{'background-color': color}"></span><span ng-show="color.isSet()" class="color-profile__conflict-weight"> weight: {{color.weight}}</span><span ng-show="!color.isSet()"> none</span></label>
+                    </div>
+                </form>
+            </li>
+        </ul>
+        <a ng-click="$ctrl.solveColorConflicts()" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> OK</a>
+        <a ng-click="$ctrl.abortSolveColorConflicts()" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>
+    </div>
+</div>

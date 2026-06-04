@@ -1,0 +1,5 @@
+app/master/docs/
+app/**/node_modules/
+app/master/src/server/server/core/text-similarity/vecs/vecs300.txt
+app/master/dist/server/core/text-similarity/vecs/vecs300.txt
+*.log

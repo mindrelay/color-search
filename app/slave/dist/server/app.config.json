@@ -1,0 +1,27 @@
+{
+    "master": "http://<master-host>:8080",
+    "rpcPassword": "<set-shared-secret>",
+    "host": "LocalHost",
+    "database": "Couchbase",
+    "saveLimit": 50000,
+    "id": 2,
+    "textSimilarity": {
+        "alpha": 0.7,
+        "hashes": 50
+    },
+    "imageFinder":{
+        "similarityThreshold": 80,
+        "defaultDistance": "euclidean"
+    },
+    "index":{
+        "lshEnabled": true,
+        "max": 30000,
+        "dimensions": 199,
+        "delta": 0.1,
+        "p": 0.5,
+        "k": 5,
+        "w": 0.5,
+        "family": "euclidean",
+        "reload": 86400000
+    }
+}
